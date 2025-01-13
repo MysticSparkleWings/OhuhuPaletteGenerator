@@ -1,5 +1,4 @@
 # 🎨 Ohuhu Palette Generator 🎨
-![Sample Screenshot](https://i.imgur.com/eIfvHeE.png)
 
 The [Ohuhu Palette Generator](https://mysticsparklewings.github.io/OhuhuPaletteGenerator/) is a tool designed to help artists and colorists create random color palettes using Ohuhu markers.
 Palettes of 3–8 colors can be generated from the **Honolulu**, **Oahu**, and/or **Kaala** marker lines, or a combination of the three.
