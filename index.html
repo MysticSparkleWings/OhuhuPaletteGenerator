@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+     <!-- Better Mobile Handling -->
+ <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Meta Description for SEO -->
+    <meta
+      name="description"
+      content="Generate custom color palettes using Ohuhu marker colors from the Honolulu, Oahu, and Kaala lines. Perfect for artists and colorists."
+    />
+
+    <!-- Keywords for SEO -->
+    <meta
+      name="keywords"
+      content="color palette generator, color palettes, Ohuhu, Ohuhu markers, Honolulu, Oahu, Kaala, color palettes, coloring, adult coloring, alcohol markers, artist tools"
+    />
+
+    <!-- Author Information -->
+    <meta name="MysticSparkleWings" content="Ohuhu Palette Generator" />
+
+    <!-- Social Media Tags -->
+    <meta property="og:title" content="Ohuhu Palette Generator" />
+    <meta
+      property="og:description"
+      content="Generate custom color palettes using Ohuhu marker colors."
+    />
+    <meta property="og:image" content="https://i.imgur.com/eIfvHeE.png" />
+    <meta
+      property="og:url"
+      content="https://github.com/MysticSparkleWings/OhuhuPaletteGenerator"
+    />
+    
+<!-- HTML Page Design Stuff -->
+    <title>Ohuhu Palette Generator</title>
+    <style>
+      body {
+        font-family: Verdana, sans-serif;
+        margin: 20px;
+        text-align: center;
+      }
+      .palette-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .color-block {
+        width: 150px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 16px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+      }
+      .color-block div {
+        text-align: center;
+      }
+      .info-paragraph {
+        margin-top: 30px;
+        font-size: 14px;
+      }
+      .info-paragraph a {
+        color: #6a5acd;
+        text-decoration: none;
+      }
+      .info-paragraph a:hover {
+        text-decoration: underline;
+      }
+      .category-buttons {
+        margin-top: 20px;
+      }
+      .category-buttons button {
+        margin: 5px;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .selected {
+        border: 2px solid #6a5acd;
+        background-color: #f0f0f0;
+      }
+      .generate-another-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #6a5acd;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      .generate-another-btn:hover {
+        background-color: #5741a7;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Title and Intro -->
+    <h1>Ohuhu Palette Generator</h1>
+    <p class="info-paragraph" style="font-size: 14px">
+      Looking for color inspiration or a palette for your next Ohuhu marker
+      project? Click one of the buttons to generate a random palette of 3-8
+      colors from Ohuhu's Honolulu, Oahu, or Kaala marker lines!
+    </p>
+    <p class="info-paragraph" style="font-size: 14px">
+      If you generate one you really like, take a screenshot to save it for
+      later!
+    </p>
+
+    <!--Marker Line Buttons -->
+    <div class="category-buttons">
+      <button onclick="generatePalette('all')" id="allBtn">All Markers</button>
+      <button onclick="generatePalette('category1')" id="category1Btn">
+        Honolulu
+      </button>
+      <button onclick="generatePalette('category2')" id="category2Btn">
+        Oahu
+      </button>
+      <button onclick="generatePalette('category3')" id="category3Btn">
+        Kaala
+      </button>
+      <button
+        onclick="generatePalette('category1+category2')"
+        id="category1+category2Btn"
+      >
+        Honolulu + Oahu
+      </button>
+      <button
+        onclick="generatePalette('category1+category3')"
+        id="category1+category3Btn"
+      >
+        Honolulu + Kaala
+      </button>
+      <button
+        onclick="generatePalette('category2+category3')"
+        id="category2+category3Btn"
+      >
+        Oahu + Kaala
+      </button>
+    </div>
+    <!-- Filter Dropdown -->
+    <div class="filter-container">
+      <select
+        class="filter-dropdown"
+        id="filterSelect"
+        onchange="handleFilterChange()"
+      >
+        <option value="random">Totally Random</option>
+        <option value="similar">Similar Colors*</option>
+        <option value="pastel">Pastel Colors</option>
+        <option value="vivid">Vivid Colors</option>
+        <option value="moody">Moody Colors</option>
+      </select>
+    </div>
+    <p class="info-paragraph" style="font-size: 10px">
+        <i>
+          <b>*</b> Using the "Similar Colors" filter for the Kaala marker line may generate palettes of only 1-2 colors. This is because the Kaala line only consists of 150 colors, so there are fewer total "Similar Colors" to pick from. </i>
+      </p>
+    <div class="palette-container" id="palette"></div>
+
+
+    <!-- Generate Another Palette Button -->
+    <button
+      class="generate-another-btn"
+      id="generateAnotherBtn"
+      onclick="generateAnotherPalette()"
+    >
+      Generate Another Palette
+    </button>
+
+    <!-- Additional Info-->
+    <div class="info-paragraph">
+      <p class="info-paragraph" style="font-size: 11px">
+        <i>
+          <b>Note:</b> The hex codes used by this generator may not be exact as
+          they were chosen and assigned to each color quickly to give a general
+          idea of what each color looks like. Always test your color palettes
+          with real marker swatches first for best results!</i
+        >
+      </p>
+
+      <p class="info-paragraph" style="font-size: 14px">
+        This generator was hastily assembled by MysticSparkleWings and is not
+        officially affiliated with Ohuhu. If you'd like to support Mystic or say
+        thanks, please consider donating to her Ko-fi Page by either visiting
+        <a href="https://ko-fi.com/mysticsparklewings" target="_blank"
+          >this link</a
+        >
+        or by using the widget below.
+      </p>
+      <p class="info-paragraph" style="font-size: 14px">
+        If you'd like to provide assistance to make the generator better because
+        you probably understand how to code things way better than she does,
+        feel free to contact her either on Ko-fi or through
+        <a href="https://linktr.ee/mysticsparklewings" target="_blank"
+          >another social site</a
+        >.
+      </p>
+    </div>
+
+    <script>
+      // CSV Links
+      const category1Link =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vQsu0jWdrRXA5P0eXe7D6uYUbacuzk8hiuus6miioOdlHQqN9vznAimwXsubdUYLS5LP1VwP16TjhEw/pub?output=csv";
+      const category2Link =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vSi2ZktBHPc8P2WcsM8fUfLVbaPMK7o7Wlo9YbHBr2V78X-iPrLizYO6Gn1A-c2J9k7-vPX9wfw-CBI/pub?output=csv";
+      const category3Link =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRHustF8GQOMQbvEZjr3KMdRLTcRKkTU4BCaYtnyL9MWSNraBY1x-MtUPAKK0Dpm2JEPHJ_AD07HeEV/pub?output=csv";
+
+      // Current filter
+      let currentFilter = "random";
+
+      // Filter change
+      function handleFilterChange() {
+        currentFilter = document.getElementById("filterSelect").value;
+        if (lastSelectedButton) {
+          const currentCategory = lastSelectedButton.id.replace("Btn", "");
+          generatePalette(currentCategory);
+        }
+      }
+
+      // Convert hexcodes to HSV
+      function hexToHSV(hex) {
+        hex = hex.replace(/^#/, "");
+
+        const r = parseInt(hex.slice(0, 2), 16) / 255;
+        const g = parseInt(hex.slice(2, 4), 16) / 255;
+        const b = parseInt(hex.slice(4, 6), 16) / 255;
+
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const diff = max - min;
+
+        let h = 0;
+        let s = max === 0 ? 0 : diff / max;
+        let v = max;
+
+        if (diff !== 0) {
+          switch (max) {
+            case r:
+              h = 60 * (((g - b) / diff) % 6);
+              break;
+            case g:
+              h = 60 * ((b - r) / diff + 2);
+              break;
+            case b:
+              h = 60 * ((r - g) / diff + 4);
+              break;
+          }
+        }
+
+        h = h < 0 ? h + 360 : h;
+
+        return {
+          h: h,
+          s: s * 100,
+          v: v * 100,
+        };
+      }
+
+      // Process CSV Links
+      async function fetchColorData(csvLink) {
+        const response = await fetch(csvLink);
+        const csvText = await response.text();
+
+        const rows = csvText.split("\n").slice(1);
+        return rows
+          .filter((row) => row.trim() !== "")
+          .map((row) => {
+            const [name, secondName, hexCode] = row.split(",");
+            return {
+              name: name.trim(),
+              secondName: secondName.trim(),
+              hex: `#${hexCode.trim()}`,
+            };
+          });
+      }
+
+      // Color data for each Marker Line
+      let category1Colors = [];
+      let category2Colors = [];
+      let category3Colors = [];
+
+      // Fetch data for Marker Lines
+      async function loadColorData() {
+        category1Colors = await fetchColorData(category1Link);
+        category2Colors = await fetchColorData(category2Link);
+        category3Colors = await fetchColorData(category3Link);
+      }
+
+      // Calculate brightness of a color (for text color)
+      function calculateBrightness(hex) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness;
+      }
+
+      // Track last selected button
+      let lastSelectedButton = null;
+
+      // Outline selected button
+      function highlightButton(buttonId) {
+        if (lastSelectedButton) {
+          lastSelectedButton.classList.remove("selected");
+        }
+
+        const currentButton = document.getElementById(buttonId);
+        currentButton.classList.add("selected");
+
+        lastSelectedButton = currentButton;
+      }
+
+      // Generate a palette based on the selected Marker Line
+      function generatePalette(category) {
+        // Highlight the button based on Marker Line
+        if (category === "all") {
+          highlightButton("allBtn");
+        } else if (category === "category1") {
+          highlightButton("category1Btn");
+        } else if (category === "category2") {
+          highlightButton("category2Btn");
+        } else if (category === "category3") {
+          highlightButton("category3Btn");
+        } else if (category === "category1+category2") {
+          highlightButton("category1+category2Btn");
+        } else if (category === "category1+category3") {
+          highlightButton("category1+category3Btn");
+        } else if (category === "category2+category3") {
+          highlightButton("category2+category3Btn");
+        }
+
+        let selectedCategoryColors = [];
+
+        if (category === "all") {
+          selectedCategoryColors = [
+            ...category1Colors,
+            ...category2Colors,
+            ...category3Colors,
+          ];
+        } else if (category === "category1") {
+          selectedCategoryColors = category1Colors;
+        } else if (category === "category2") {
+          selectedCategoryColors = category2Colors;
+        } else if (category === "category3") {
+          selectedCategoryColors = category3Colors;
+        } else if (category === "category1+category2") {
+          selectedCategoryColors = [...category1Colors, ...category2Colors];
+        } else if (category === "category1+category3") {
+          selectedCategoryColors = [...category1Colors, ...category3Colors];
+        } else if (category === "category2+category3") {
+          selectedCategoryColors = [...category2Colors, ...category3Colors];
+        }
+
+        // Apply Filter
+        if (currentFilter === "similar") {
+          const randomHue = Math.random() * 360;
+          selectedCategoryColors = selectedCategoryColors.filter((color) => {
+            const hsv = hexToHSV(color.hex);
+            return (
+              Math.abs(hsv.h - randomHue) <= 10 ||
+              Math.abs(hsv.h - randomHue + 360) <= 10
+            );
+          });
+        } else if (currentFilter === "pastel") {
+          selectedCategoryColors = selectedCategoryColors.filter((color) => {
+            const hsv = hexToHSV(color.hex);
+            return hsv.s <= 30 && hsv.v >= 80;
+          });
+        } else if (currentFilter === "vivid") {
+          selectedCategoryColors = selectedCategoryColors.filter((color) => {
+            const hsv = hexToHSV(color.hex);
+            return hsv.s >= 50 && hsv.v >= 50;
+          });
+        } else if (currentFilter === "moody") {
+          selectedCategoryColors = selectedCategoryColors.filter((color) => {
+            const hsv = hexToHSV(color.hex);
+            return hsv.v <= 60;
+          });
+        }
+
+// Generate between 3 and 8 colors in the palette
+let numColors = Math.floor(Math.random() * 6) + 3;
+
+// Check if there are enough colors [Kaala bug fix!!]
+if (selectedCategoryColors.length < numColors) {
+  console.warn(
+    `Not enough colors to generate a full palette (${numColors} colors requested). Using available ${selectedCategoryColors.length} colors instead.`
+  );
+  // Use available colors as the palette size
+  numColors = selectedCategoryColors.length;
+}
+
+const randomColors = [];
+const usedColors = new Set();
+
+while (
+  randomColors.length < numColors &&
+  selectedCategoryColors.length > 0
+) {
+  const randomIndex = Math.floor(
+    Math.random() * selectedCategoryColors.length
+  );
+  const randomColor = selectedCategoryColors[randomIndex];
+  if (!usedColors.has(randomColor.hex)) {
+    randomColors.push(randomColor);
+    usedColors.add(randomColor.hex);
+  }
+}
+
+
+        // Display the palette colors
+        const paletteContainer = document.getElementById("palette");
+        paletteContainer.innerHTML = "";
+        randomColors.forEach((color) => {
+          const brightness = calculateBrightness(color.hex);
+          const textColor = brightness > 128 ? "#000" : "#fff";
+          const colorBlock = document.createElement("div");
+          colorBlock.className = "color-block";
+          colorBlock.style.backgroundColor = color.hex;
+          colorBlock.style.color = textColor;
+          colorBlock.innerHTML = `<div>${color.name}<br>${color.secondName}<br>${color.hex}</div>`;
+          paletteContainer.appendChild(colorBlock);
+        });
+      }
+
+      // Generate another palette, remember Marker Line + Filter
+      function generateAnotherPalette() {
+        const currentCategory = lastSelectedButton.id.replace("Btn", "");
+        generatePalette(currentCategory);
+      }
+
+      // Load data when the page loads
+      loadColorData();
+    </script>
+
+    <!--Ko-fi Widget-->
+    <script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
+    <div
+      style="
+        transform: scale(0.7);
+        transform-origin: center;
+        width: 100%;
+        overflow: hidden;
+        margin-top: -95px;
+      "
+    >
+      <iframe
+        id="kofiframe"
+        src="https://ko-fi.com/mysticsparklewings/?hidefeed=true&widget=true&embed=true&preview=true"
+        style="border: none; width: 100%; background: #f9f9f9"
+        height="712"
+        title="mysticsparklewings"
+      >
+      </iframe>
+      <!-- Style Code -->
+      <style>
+        .info-paragraph {
+          max-width: 70%;
+          margin: 20px auto;
+          word-wrap: break-word;
+          display: block;
+        }
+        .filter-container {
+          margin-top: 20px;
+        }
+        .filter-dropdown {
+          padding: 10px 20px;
+          font-size: 14px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          cursor: pointer;
+          background-color: white;
+        }
+        .filter-dropdown:focus {
+          outline: none;
+          border-color: #6a5acd;
+        }
+      </style>
+    </div>
+  </body>
+</html>
