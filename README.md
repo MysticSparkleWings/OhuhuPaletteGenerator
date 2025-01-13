@@ -22,6 +22,7 @@ Palettes of 3–8 colors can be generated from the **Honolulu**, **Oahu**, and/o
 
 ## 📝 Notes 📝
 
+- Using the "Similar Colors" filter for the Kaala marker line may generate palettes of only 1-2 colors. This is because the Kaala line only consists of 150 colors, so there are fewer total "Similar Colors" to pick from.
 - The Hex Codes used by this generator may not be exact and exist purely to give a general idea of what each color looks like. Always test your color palettes with real marker swatches first for best results!
 - The Hex Codes may be updated and/or changed in the future for better color accuracy
 - The code for this project has been heavily Frankensteined from existing color palette generator projects and therefore is probably not as elegant as it could be.
