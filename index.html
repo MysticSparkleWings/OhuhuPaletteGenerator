@@ -26,7 +26,7 @@
       property="og:description"
       content="Generate custom color palettes using Ohuhu marker colors."
     />
-    <meta property="og:image" content="https://imgur.com/9Yfhmk5" />
+    <meta property="og:image" content="https://i.imgur.com/eIfvHeE.png" />
     <meta
       property="og:url"
       content="https://github.com/MysticSparkleWings/OhuhuPaletteGenerator"
@@ -157,6 +157,7 @@
         <option value="pastel">Pastel Colors</option>
         <option value="vivid">Vivid Colors</option>
         <option value="moody">Moody Colors</option>
+<option value="neutrals">Neutral Colors</option>
       </select>
     </div>
     <p class="info-paragraph" style="font-size: 10px">
@@ -385,6 +386,21 @@
             const hsv = hexToHSV(color.hex);
             return hsv.v <= 60;
           });
+       else if (currentFilter === "neutrals") {
+  selectedMarkerLines = selectedMarkerLines.filter((color) => {
+    const hsv = hexToHSV(color.hex);
+    return (
+      // Greys
+      (hsv.s <= 7) ||
+// Earthtones
+(((hsv.h >= 30 && hsv.h <= 50) || 
+  (hsv.h >= 50 && hsv.h <= 50) ||
+  (hsv.h >= 15 && hsv.h < 30)) &&
+  hsv.s >= 0 && hsv.s <= 100 &&
+  hsv.v >= 0 && hsv.v <= 85)
+);
+
+  });
         }
 
 // Generate between 3 and 8 colors in the palette
