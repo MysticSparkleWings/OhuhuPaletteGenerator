@@ -386,8 +386,8 @@
             const hsv = hexToHSV(color.hex);
             return hsv.v <= 60;
           });
-       else if (currentFilter === "neutrals") {
-  selectedMarkerLines = selectedMarkerLines.filter((color) => {
+        } else if (currentFilter === "neutrals") {
+  selectedCategoryColors = selectedCategoryColors.filter((color) => {
     const hsv = hexToHSV(color.hex);
     return (
       // Greys
