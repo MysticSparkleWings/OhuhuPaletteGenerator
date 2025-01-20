@@ -157,7 +157,6 @@
         <option value="pastel">Pastel Colors</option>
         <option value="vivid">Vivid Colors</option>
         <option value="moody">Moody Colors</option>
-<option value="neutrals">Neutral Colors</option>
       </select>
     </div>
     <p class="info-paragraph" style="font-size: 10px">
@@ -386,21 +385,6 @@
             const hsv = hexToHSV(color.hex);
             return hsv.v <= 60;
           });
-        } else if (currentFilter === "neutrals") {
-  selectedCategoryColors = selectedCategoryColors.filter((color) => {
-    const hsv = hexToHSV(color.hex);
-    return (
-      // Greys
-      (hsv.s <= 7) ||
-// Earthtones
-(((hsv.h >= 30 && hsv.h <= 50) || 
-  (hsv.h >= 50 && hsv.h <= 50) ||
-  (hsv.h >= 15 && hsv.h < 30)) &&
-  hsv.s >= 0 && hsv.s <= 100 &&
-  hsv.v >= 0 && hsv.v <= 85)
-);
-
-  });
         }
 
 // Generate between 3 and 8 colors in the palette
