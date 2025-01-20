@@ -15,6 +15,7 @@ Palettes of 3–8 colors can be generated from the **Honolulu**, **Oahu**, and/o
   - Pastel Colors: For Palettes that are Soft and Light
   - Vivid Colors: For Palettes that are Bright and Eye-Catching
   - Moody Colors: For Palettes that are Rich and Dark
+  - Neutral Colors: For Palettes that are Minimal and Grounded 
 - Each Color is identified by the Marker Number Code, Color Name, and a Hex Code\* that gives a general idea of what each color looks like
 - Screenshot Palettes you like to Save them for Later
 
