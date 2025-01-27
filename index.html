@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-     <!-- Better Mobile Handling -->
- <meta charset="UTF-8" />
+    <!-- Better Mobile Handling -->
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <!-- Meta Description for SEO -->
     <meta
       name="description"
@@ -31,8 +31,8 @@
       property="og:url"
       content="https://github.com/MysticSparkleWings/OhuhuPaletteGenerator"
     />
-    
-<!-- HTML Page Design Stuff -->
+
+    <!-- HTML Page Design Stuff -->
     <title>Ohuhu Palette Generator</title>
     <style>
       body {
@@ -40,7 +40,7 @@
         margin: 20px;
         text-align: center;
       }
-      .palette-container {
+      .palette-Display {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
@@ -73,10 +73,10 @@
       .info-paragraph a:hover {
         text-decoration: underline;
       }
-      .category-buttons {
+      .MarkerLine-buttons {
         margin-top: 20px;
       }
-      .category-buttons button {
+      .MarkerLine-buttons button {
         margin: 5px;
         padding: 10px 20px;
         font-size: 14px;
@@ -115,33 +115,23 @@
     </p>
 
     <!--Marker Line Buttons -->
-    <div class="category-buttons">
+    <div class="MarkerLine-buttons">
       <button onclick="generatePalette('all')" id="allBtn">All Markers</button>
-      <button onclick="generatePalette('category1')" id="category1Btn">
+      <button onclick="generatePalette('honolulu')" id="honoluluBtn">
         Honolulu
       </button>
-      <button onclick="generatePalette('category2')" id="category2Btn">
-        Oahu
-      </button>
-      <button onclick="generatePalette('category3')" id="category3Btn">
-        Kaala
-      </button>
-      <button
-        onclick="generatePalette('category1+category2')"
-        id="category1+category2Btn"
-      >
+      <button onclick="generatePalette('oahu')" id="oahuBtn">Oahu</button>
+      <button onclick="generatePalette('kaala')" id="kaalaBtn">Kaala</button>
+      <button onclick="generatePalette('honolulu+oahu')" id="honolulu+oahuBtn">
         Honolulu + Oahu
       </button>
       <button
-        onclick="generatePalette('category1+category3')"
-        id="category1+category3Btn"
+        onclick="generatePalette('honolulu+kaala')"
+        id="honolulu+kaalaBtn"
       >
         Honolulu + Kaala
       </button>
-      <button
-        onclick="generatePalette('category2+category3')"
-        id="category2+category3Btn"
-      >
+      <button onclick="generatePalette('oahu+kaala')" id="oahu+kaalaBtn">
         Oahu + Kaala
       </button>
     </div>
@@ -157,15 +147,18 @@
         <option value="pastel">Pastel Colors</option>
         <option value="vivid">Vivid Colors</option>
         <option value="moody">Moody Colors</option>
-<option value="neutrals">Neutral Colors</option>
+        <option value="neutrals">Neutral Colors</option>
       </select>
     </div>
     <p class="info-paragraph" style="font-size: 10px">
-        <i>
-          <b>*</b> Using the "Similar Colors" filter for the Kaala marker line may generate palettes of only 1-2 colors. This is because the Kaala line only consists of 150 colors, so there are fewer total "Similar Colors" to pick from. </i>
-      </p>
-    <div class="palette-container" id="palette"></div>
-
+      <i>
+        <b>*</b> Using the "Similar Colors" filter for the Kaala marker line may
+        generate palettes of only 1-2 colors. This is because the Kaala line
+        only consists of 150 colors, so there are fewer total "Similar Colors"
+        to pick from.
+      </i>
+    </p>
+    <div class="palette-Display" id="palette"></div>
 
     <!-- Generate Another Palette Button -->
     <button
@@ -208,11 +201,11 @@
 
     <script>
       // CSV Links
-      const category1Link =
+      const honoluluLink =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vQsu0jWdrRXA5P0eXe7D6uYUbacuzk8hiuus6miioOdlHQqN9vznAimwXsubdUYLS5LP1VwP16TjhEw/pub?output=csv";
-      const category2Link =
+      const oahuLink =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vSi2ZktBHPc8P2WcsM8fUfLVbaPMK7o7Wlo9YbHBr2V78X-iPrLizYO6Gn1A-c2J9k7-vPX9wfw-CBI/pub?output=csv";
-      const category3Link =
+      const kaalaLink =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vRHustF8GQOMQbvEZjr3KMdRLTcRKkTU4BCaYtnyL9MWSNraBY1x-MtUPAKK0Dpm2JEPHJ_AD07HeEV/pub?output=csv";
 
       // Current filter
@@ -222,8 +215,8 @@
       function handleFilterChange() {
         currentFilter = document.getElementById("filterSelect").value;
         if (lastSelectedButton) {
-          const currentCategory = lastSelectedButton.id.replace("Btn", "");
-          generatePalette(currentCategory);
+          const currentMarkerLine = lastSelectedButton.id.replace("Btn", "");
+          generatePalette(currentMarkerLine);
         }
       }
 
@@ -285,15 +278,15 @@
       }
 
       // Color data for each Marker Line
-      let category1Colors = [];
-      let category2Colors = [];
-      let category3Colors = [];
+      let honoluluColors = [];
+      let oahuColors = [];
+      let kaalaColors = [];
 
       // Fetch data for Marker Lines
       async function loadColorData() {
-        category1Colors = await fetchColorData(category1Link);
-        category2Colors = await fetchColorData(category2Link);
-        category3Colors = await fetchColorData(category3Link);
+        honoluluColors = await fetchColorData(honoluluLink);
+        oahuColors = await fetchColorData(oahuLink);
+        kaalaColors = await fetchColorData(kaalaLink);
       }
 
       // Calculate brightness of a color (for text color)
@@ -321,121 +314,131 @@
       }
 
       // Generate a palette based on the selected Marker Line
-      function generatePalette(category) {
+      function generatePalette(MarkerLine) {
         // Highlight the button based on Marker Line
-        if (category === "all") {
+        if (MarkerLine === "all") {
           highlightButton("allBtn");
-        } else if (category === "category1") {
-          highlightButton("category1Btn");
-        } else if (category === "category2") {
-          highlightButton("category2Btn");
-        } else if (category === "category3") {
-          highlightButton("category3Btn");
-        } else if (category === "category1+category2") {
-          highlightButton("category1+category2Btn");
-        } else if (category === "category1+category3") {
-          highlightButton("category1+category3Btn");
-        } else if (category === "category2+category3") {
-          highlightButton("category2+category3Btn");
+        } else if (MarkerLine === "honolulu") {
+          highlightButton("honoluluBtn");
+        } else if (MarkerLine === "oahu") {
+          highlightButton("oahuBtn");
+        } else if (MarkerLine === "kaala") {
+          highlightButton("kaalaBtn");
+        } else if (MarkerLine === "honolulu+oahu") {
+          highlightButton("honolulu+oahuBtn");
+        } else if (MarkerLine === "honolulu+kaala") {
+          highlightButton("honolulu+kaalaBtn");
+        } else if (MarkerLine === "oahu+kaala") {
+          highlightButton("oahu+kaalaBtn");
         }
 
-        let selectedCategoryColors = [];
+        let selectedMarkerLineColors = [];
 
-        if (category === "all") {
-          selectedCategoryColors = [
-            ...category1Colors,
-            ...category2Colors,
-            ...category3Colors,
+        if (MarkerLine === "all") {
+          selectedMarkerLineColors = [
+            ...honoluluColors,
+            ...oahuColors,
+            ...kaalaColors,
           ];
-        } else if (category === "category1") {
-          selectedCategoryColors = category1Colors;
-        } else if (category === "category2") {
-          selectedCategoryColors = category2Colors;
-        } else if (category === "category3") {
-          selectedCategoryColors = category3Colors;
-        } else if (category === "category1+category2") {
-          selectedCategoryColors = [...category1Colors, ...category2Colors];
-        } else if (category === "category1+category3") {
-          selectedCategoryColors = [...category1Colors, ...category3Colors];
-        } else if (category === "category2+category3") {
-          selectedCategoryColors = [...category2Colors, ...category3Colors];
+        } else if (MarkerLine === "honolulu") {
+          selectedMarkerLineColors = honoluluColors;
+        } else if (MarkerLine === "oahu") {
+          selectedMarkerLineColors = oahuColors;
+        } else if (MarkerLine === "kaala") {
+          selectedMarkerLineColors = kaalaColors;
+        } else if (MarkerLine === "honolulu+oahu") {
+          selectedMarkerLineColors = [...honoluluColors, ...oahuColors];
+        } else if (MarkerLine === "honolulu+kaala") {
+          selectedMarkerLineColors = [...honoluluColors, ...kaalaColors];
+        } else if (MarkerLine === "oahu+kaala") {
+          selectedMarkerLineColors = [...oahuColors, ...kaalaColors];
         }
 
         // Apply Filter
         if (currentFilter === "similar") {
           const randomHue = Math.random() * 360;
-          selectedCategoryColors = selectedCategoryColors.filter((color) => {
-            const hsv = hexToHSV(color.hex);
-            return (
-              Math.abs(hsv.h - randomHue) <= 10 ||
-              Math.abs(hsv.h - randomHue + 360) <= 10
-            );
-          });
+          selectedMarkerLineColors = selectedMarkerLineColors.filter(
+            (color) => {
+              const hsv = hexToHSV(color.hex);
+              return (
+                Math.abs(hsv.h - randomHue) <= 10 ||
+                Math.abs(hsv.h - randomHue + 360) <= 10
+              );
+            }
+          );
         } else if (currentFilter === "pastel") {
-          selectedCategoryColors = selectedCategoryColors.filter((color) => {
-            const hsv = hexToHSV(color.hex);
-            return hsv.s <= 30 && hsv.v >= 80;
-          });
+          selectedMarkerLineColors = selectedMarkerLineColors.filter(
+            (color) => {
+              const hsv = hexToHSV(color.hex);
+              return hsv.s <= 30 && hsv.v >= 80;
+            }
+          );
         } else if (currentFilter === "vivid") {
-          selectedCategoryColors = selectedCategoryColors.filter((color) => {
-            const hsv = hexToHSV(color.hex);
-            return hsv.s >= 50 && hsv.v >= 50;
-          });
+          selectedMarkerLineColors = selectedMarkerLineColors.filter(
+            (color) => {
+              const hsv = hexToHSV(color.hex);
+              return hsv.s >= 50 && hsv.v >= 50;
+            }
+          );
         } else if (currentFilter === "moody") {
-          selectedCategoryColors = selectedCategoryColors.filter((color) => {
-            const hsv = hexToHSV(color.hex);
-            return hsv.v <= 60;
-          });
-       } else if (currentFilter === "neutrals") {
-  selectedCategoryColors = selectedCategoryColors.filter((color) => {
-    const hsv = hexToHSV(color.hex);
-    return (
-      // Greys
-      (hsv.s <= 7) ||
-// Earthtones
-(((hsv.h >= 30 && hsv.h <= 50) || 
-  (hsv.h >= 50 && hsv.h <= 50) ||
-  (hsv.h >= 15 && hsv.h < 30)) &&
-  hsv.s >= 0 && hsv.s <= 100 &&
-  hsv.v >= 0 && hsv.v <= 85)
-);
-
-  });
+          selectedMarkerLineColors = selectedMarkerLineColors.filter(
+            (color) => {
+              const hsv = hexToHSV(color.hex);
+              return hsv.v <= 60;
+            }
+          );
+        } else if (currentFilter === "neutrals") {
+          selectedMarkerLineColors = selectedMarkerLineColors.filter(
+            (color) => {
+              const hsv = hexToHSV(color.hex);
+              return (
+                // Greys
+                hsv.s <= 7 ||
+                // Earthtones
+                (((hsv.h >= 30 && hsv.h <= 50) ||
+                  (hsv.h >= 50 && hsv.h <= 50) ||
+                  (hsv.h >= 15 && hsv.h < 30)) &&
+                  hsv.s >= 0 &&
+                  hsv.s <= 100 &&
+                  hsv.v >= 0 &&
+                  hsv.v <= 85)
+              );
+            }
+          );
         }
 
-// Generate between 3 and 8 colors in the palette
-let numColors = Math.floor(Math.random() * 6) + 3;
+        // Generate between 3 and 8 colors in the palette
+        let numColors = Math.floor(Math.random() * 6) + 3;
 
-// Check if there are enough colors [Kaala bug fix!!]
-if (selectedCategoryColors.length < numColors) {
-  console.warn(
-    `Not enough colors to generate a full palette (${numColors} colors requested). Using available ${selectedCategoryColors.length} colors instead.`
-  );
-  // Use available colors as the palette size
-  numColors = selectedCategoryColors.length;
-}
+        // Check if there are enough colors [Kaala bug fix!!]
+        if (selectedMarkerLineColors.length < numColors) {
+          console.warn(
+            `Not enough colors to generate a full palette (${numColors} colors requested). Using available ${selectedMarkerLineColors.length} colors instead.`
+          );
+          // Use available colors as the palette size
+          numColors = selectedMarkerLineColors.length;
+        }
 
-const randomColors = [];
-const usedColors = new Set();
+        const randomColors = [];
+        const usedColors = new Set();
 
-while (
-  randomColors.length < numColors &&
-  selectedCategoryColors.length > 0
-) {
-  const randomIndex = Math.floor(
-    Math.random() * selectedCategoryColors.length
-  );
-  const randomColor = selectedCategoryColors[randomIndex];
-  if (!usedColors.has(randomColor.hex)) {
-    randomColors.push(randomColor);
-    usedColors.add(randomColor.hex);
-  }
-}
-
+        while (
+          randomColors.length < numColors &&
+          selectedMarkerLineColors.length > 0
+        ) {
+          const randomIndex = Math.floor(
+            Math.random() * selectedMarkerLineColors.length
+          );
+          const randomColor = selectedMarkerLineColors[randomIndex];
+          if (!usedColors.has(randomColor.hex)) {
+            randomColors.push(randomColor);
+            usedColors.add(randomColor.hex);
+          }
+        }
 
         // Display the palette colors
-        const paletteContainer = document.getElementById("palette");
-        paletteContainer.innerHTML = "";
+        const paletteDisplay = document.getElementById("palette");
+        paletteDisplay.innerHTML = "";
         randomColors.forEach((color) => {
           const brightness = calculateBrightness(color.hex);
           const textColor = brightness > 128 ? "#000" : "#fff";
@@ -444,14 +447,14 @@ while (
           colorBlock.style.backgroundColor = color.hex;
           colorBlock.style.color = textColor;
           colorBlock.innerHTML = `<div>${color.name}<br>${color.secondName}<br>${color.hex}</div>`;
-          paletteContainer.appendChild(colorBlock);
+          paletteDisplay.appendChild(colorBlock);
         });
       }
 
       // Generate another palette, remember Marker Line + Filter
       function generateAnotherPalette() {
-        const currentCategory = lastSelectedButton.id.replace("Btn", "");
-        generatePalette(currentCategory);
+        const currentMarkerLine = lastSelectedButton.id.replace("Btn", "");
+        generatePalette(currentMarkerLine);
       }
 
       // Load data when the page loads
