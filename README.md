@@ -12,6 +12,8 @@ Palettes of 3–8 colors can be generated from the **Honolulu**, **Oahu**, and/o
 - Filter the Generated Palette Colors to be:
   - Totally Random
   - Similar Colors: For Palettes of Similar Hues
+  - Warm Colors: For Palettes of Warm Colors like Yellows, Oranges, Reds, etc.
+  - Cool Colors: For Palettes of Cool Colors like Violets, Blues, Greens, etc.
   - Pastel Colors: For Palettes that are Soft and Light
   - Vivid Colors: For Palettes that are Bright and Eye-Catching
   - Moody Colors: For Palettes that are Rich and Dark
