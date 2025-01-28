@@ -144,6 +144,8 @@
       >
         <option value="random">Totally Random</option>
         <option value="similar">Similar Colors*</option>
+        <option value="warm">Warm Colors</option>
+        <option value="cool">Cool Colors</option>
         <option value="pastel">Pastel Colors</option>
         <option value="vivid">Vivid Colors</option>
         <option value="moody">Moody Colors</option>
@@ -354,58 +356,65 @@
           selectedMarkerLineColors = [...oahuColors, ...kaalaColors];
         }
 
-        // Apply Filter
-        if (currentFilter === "similar") {
-          const randomHue = Math.random() * 360;
-          selectedMarkerLineColors = selectedMarkerLineColors.filter(
-            (color) => {
-              const hsv = hexToHSV(color.hex);
-              return (
-                Math.abs(hsv.h - randomHue) <= 10 ||
-                Math.abs(hsv.h - randomHue + 360) <= 10
-              );
-            }
-          );
-        } else if (currentFilter === "pastel") {
-          selectedMarkerLineColors = selectedMarkerLineColors.filter(
-            (color) => {
-              const hsv = hexToHSV(color.hex);
-              return hsv.s <= 30 && hsv.v >= 80;
-            }
-          );
-        } else if (currentFilter === "vivid") {
-          selectedMarkerLineColors = selectedMarkerLineColors.filter(
-            (color) => {
-              const hsv = hexToHSV(color.hex);
-              return hsv.s >= 50 && hsv.v >= 50;
-            }
-          );
-        } else if (currentFilter === "moody") {
-          selectedMarkerLineColors = selectedMarkerLineColors.filter(
-            (color) => {
-              const hsv = hexToHSV(color.hex);
-              return hsv.v <= 60;
-            }
-          );
-        } else if (currentFilter === "neutrals") {
-          selectedMarkerLineColors = selectedMarkerLineColors.filter(
-            (color) => {
-              const hsv = hexToHSV(color.hex);
-              return (
-                // Greys
-                hsv.s <= 7 ||
-                // Earthtones
-                (((hsv.h >= 30 && hsv.h <= 50) ||
-                  (hsv.h >= 50 && hsv.h <= 50) ||
-                  (hsv.h >= 15 && hsv.h < 30)) &&
-                  hsv.s >= 0 &&
-                  hsv.s <= 100 &&
-                  hsv.v >= 0 &&
-                  hsv.v <= 85)
-              );
-            }
-          );
-        }
+// Apply Filter
+if (currentFilter === "similar") {
+  const randomHue = Math.random() * 360;
+  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+    const hsv = hexToHSV(color.hex);
+    return (
+      Math.abs(hsv.h - randomHue) <= 10 ||
+      Math.abs(hsv.h - randomHue + 360) <= 10
+    );
+  });
+} else if (currentFilter === "pastel") {
+  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+    const hsv = hexToHSV(color.hex);
+    return hsv.s <= 30 && hsv.v >= 80;
+  });
+} else if (currentFilter === "vivid") {
+  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+    const hsv = hexToHSV(color.hex);
+    return hsv.s >= 50 && hsv.v >= 50;
+  });
+} else if (currentFilter === "moody") {
+  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+    const hsv = hexToHSV(color.hex);
+    return hsv.v <= 60;
+  });
+} else if (currentFilter === "neutrals") {
+  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+    const hsv = hexToHSV(color.hex);
+    return (
+      // Greys
+      hsv.s <= 7 ||
+      // Earthtones
+      (((hsv.h >= 30 && hsv.h <= 50) ||
+        (hsv.h >= 50 && hsv.h <= 50) ||
+        (hsv.h >= 15 && hsv.h < 30)) &&
+        hsv.s >= 0 &&
+        hsv.s <= 100 &&
+        hsv.v >= 0 &&
+        hsv.v <= 85)
+    );
+  });
+} else if (currentFilter === "warm") {
+  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+    const hsv = hexToHSV(color.hex);
+    return (
+      ((hsv.h >= 0 && hsv.h <= 50) || 
+        (hsv.h >= 340 && hsv.h <= 360)) &&
+      hsv.s >= 20 
+    );
+  });
+} else if (currentFilter === "cool") {
+  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+    const hsv = hexToHSV(color.hex);
+    return (
+      (hsv.h >= 160 && hsv.h <= 280) && 
+      hsv.s >= 15 
+    );
+  });
+}
 
         // Generate between 3 and 8 colors in the palette
         let numColors = Math.floor(Math.random() * 6) + 3;
