@@ -40,6 +40,7 @@
         margin: 20px;
         text-align: center;
       }
+
       .palette-Display {
         display: flex;
         justify-content: center;
@@ -48,8 +49,8 @@
         margin-top: 20px;
       }
       .color-block {
-        width: 150px;
-        height: 150px;
+        width: 180px;
+        height: 180px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -62,6 +63,34 @@
       .color-block div {
         text-align: center;
       }
+      .color-block div.color-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.color-block div.label {
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
+}
+
+.color-block div.hex-code {
+  font-family: monospace;
+  font-size: 13px;
+  margin-top: auto;
+  text-align: center;
+  word-break: break-word;
+} 
+
       .info-paragraph {
         margin-top: 30px;
         font-size: 14px;
@@ -86,6 +115,23 @@
         border: 2px solid #6a5acd;
         background-color: #f0f0f0;
       }
+     
+     .name-toggle-btn {
+  margin: 5px;
+  padding: 8px 16px;
+  font-size: 14px;
+  border: 1px solid #6a5acd;
+  background-color: white;
+  color: #6a5acd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.name-toggle-btn.selected {
+  background-color: #6a5acd;
+  color: white;
+}
+
       .generate-another-btn {
         margin-top: 20px;
         padding: 10px 20px;
@@ -135,6 +181,13 @@
         Oahu + Kaala
       </button>
     </div>
+          <!-- Name/Number Toggle -->
+<div id="nameToggleContainer" style="margin-top: 20px;">
+  <button class="name-toggle-btn selected" onclick="setNameDisplayMode('both')" id="toggleBoth">New & Old Names/Numbers</button>
+  <button class="name-toggle-btn" onclick="setNameDisplayMode('old')" id="toggleOld">Old Names/Numbers Only</button>
+  <button class="name-toggle-btn" onclick="setNameDisplayMode('new')" id="toggleNew">New Names/Numbers Only</button>
+</div>
+    
     <!-- Filter Dropdown -->
     <div class="filter-container">
       <select
@@ -175,9 +228,7 @@
     <div class="info-paragraph">
       <p class="info-paragraph" style="font-size: 11px">
         <i>
-          <b>Note:</b> The hex codes used by this generator may not be exact as
-          they were chosen and assigned to each color quickly to give a general
-          idea of what each color looks like. Always test your color palettes
+          <b>Note:</b> The hex codes used by this generator are a work-in-progress and may not be exact. Always test your color palettes
           with real marker swatches first for best results!</i
         >
       </p>
@@ -192,12 +243,15 @@
         or by using the widget below.
       </p>
       <p class="info-paragraph" style="font-size: 14px">
-        <b>UPDATE! 3/20/25:</b>
+        <b>UPDATE! 07/08/25:</b>
       </p>
-      Mystic's Reddit Account was recently suspended in error and it is unknown
-      if or when the account will be able to be recovered. As a result, she is
-      unable to help/answer Ohuhu-related questions there and all of her
-      previous posts/comments doing so are completely invisible.
+      <b>1.</b> Please refer to  <a href="https://ohuhu.com/pages/faq" target="_blank"
+        >Ohuhu's FAQ Page</a
+      > about the New Name/Number System that will apply to all of the above marker lines and feel free to double-check any code conversions using either  <a href="https://ohuhu.com/pages/color-codes-index" target="_blank"
+        >Ohuhu's Color Index Tool</a
+      > or Mystic's (new)  <a href="https://docs.google.com/spreadsheets/d/1Y4F6jlvxUpsU1CoanMljjwTiW4Ngxk8u2AoxfBuQz_A/" target="_blank"
+        >BIG Ohuhu Spreadsheet</a
+      >. 
       <p></p>
       If you'd like to pick Mystic's brain about Ohuhu markers/sets directly,
       please contact her through
@@ -205,280 +259,398 @@
         >another social site</a
       >.
       <p>
-        If you know of some way to get in touch with Reddit Admins and/or get
-        her account restored faster beyond submitting daily appeals/emails,
-        please either do what you can or let her know through one of the linked
-        other social sites.
+        <b>2.</b> Mystic has tried all ways she can think of to contact Reddit to get her still-wrongly-suspended account back with NO response. If you have any reliable information on how to get in touch with Reddit and/or recover a suspended Reddit account, please contact Mystic through <a href="https://linktr.ee/mysticsparklewings" target="_blank"
+        >another social site</a
+      >. 
       </p>
     </div>
 
     <script>
       // CSV Links
-      const honoluluLink =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vQsu0jWdrRXA5P0eXe7D6uYUbacuzk8hiuus6miioOdlHQqN9vznAimwXsubdUYLS5LP1VwP16TjhEw/pub?output=csv";
-      const oahuLink =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vSi2ZktBHPc8P2WcsM8fUfLVbaPMK7o7Wlo9YbHBr2V78X-iPrLizYO6Gn1A-c2J9k7-vPX9wfw-CBI/pub?output=csv";
-      const kaalaLink =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRHustF8GQOMQbvEZjr3KMdRLTcRKkTU4BCaYtnyL9MWSNraBY1x-MtUPAKK0Dpm2JEPHJ_AD07HeEV/pub?output=csv";
+// Consolidated CSV Link
+const unifiedCSV =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTXyBuMZShW6A_T96cn-InrAbiv2ef9C4aEuVBewjqaaSaZ5Y8irlKwE3sKHwf4jA/pub?output=csv";
 
-      // Current filter
-      let currentFilter = "random";
+// Color data for each Marker Line
+let honoluluColors = [];
+let oahuColors = [];
+let kaalaColors = [];
 
-      // Filter change
-      function handleFilterChange() {
-        currentFilter = document.getElementById("filterSelect").value;
-        if (lastSelectedButton) {
-          const currentMarkerLine = lastSelectedButton.id.replace("Btn", "");
-          generatePalette(currentMarkerLine);
-        }
-      }
+// Fetch and parse data for all Marker Lines from the single CSV
+async function loadColorData() {
+  const response = await fetch(unifiedCSV);
+  const csvText = await response.text();
+  const rows = csvText.split("\n").slice(1); // Skip header
 
-      // Convert hexcodes to HSV
-      function hexToHSV(hex) {
-        hex = hex.replace(/^#/, "");
+  honoluluColors = [];
+  oahuColors = [];
+  kaalaColors = [];
 
-        const r = parseInt(hex.slice(0, 2), 16) / 255;
-        const g = parseInt(hex.slice(2, 4), 16) / 255;
-        const b = parseInt(hex.slice(4, 6), 16) / 255;
+  rows.forEach((row) => {
+    const columns = row.split(",");
 
-        const max = Math.max(r, g, b);
-        const min = Math.min(r, g, b);
-        const diff = max - min;
+    const hex = columns[8] ? `#${columns[8].trim()}` : null;
 
-        let h = 0;
-        let s = max === 0 ? 0 : diff / max;
-        let v = max;
+    // Honolulu (Cols 3 & 4) with New names (Cols 1 & 2)
+    if (columns[2] && columns[3] && columns[0] && columns[1] && hex) {
+      honoluluColors.push({
+        newNumber: columns[0].trim(),
+        newName: columns[1].trim(),
+        oldNumber: columns[2].trim(),
+        oldName: columns[3].trim(),
+        hex,
+      });
+    }
 
-        if (diff !== 0) {
-          switch (max) {
-            case r:
-              h = 60 * (((g - b) / diff) % 6);
-              break;
-            case g:
-              h = 60 * ((b - r) / diff + 2);
-              break;
-            case b:
-              h = 60 * ((r - g) / diff + 4);
-              break;
-          }
-        }
+    // Oahu (Cols 5 & 6) with New names (Cols 1 & 2)
+    if (columns[4] && columns[5] && columns[0] && columns[1] && hex) {
+      oahuColors.push({
+        newNumber: columns[0].trim(),
+        newName: columns[1].trim(),
+        oldNumber: columns[4].trim(),
+        oldName: columns[5].trim(),
+        hex,
+      });
+    }
 
-        h = h < 0 ? h + 360 : h;
+    // Kaala (Cols 7 & 8) with New names (Cols 1 & 2)
+    if (columns[6] && columns[7] && columns[0] && columns[1] && hex) {
+      kaalaColors.push({
+        newNumber: columns[0].trim(),
+        newName: columns[1].trim(),
+        oldNumber: columns[6].trim(),
+        oldName: columns[7].trim(),
+        hex,
+      });
+    }
+  });
+}
+      
+// Current filter
+let currentFilter = "random";
 
-        return {
-          h: h,
-          s: s * 100,
-          v: v * 100,
-        };
-      }
+// Filter change
+function handleFilterChange() {
+  currentFilter = document.getElementById("filterSelect").value;
+  if (lastSelectedButton) {
+    const currentMarkerLine = lastSelectedButton.id.replace("Btn", "");
+    generatePalette(currentMarkerLine);
+  }
+}
 
-      // Process CSV Links
-      async function fetchColorData(csvLink) {
-        const response = await fetch(csvLink);
-        const csvText = await response.text();
+// Convert hexcodes to HSV
+function hexToHSV(hex) {
+  hex = hex.replace(/^#/, "");
 
-        const rows = csvText.split("\n").slice(1);
-        return rows
-          .filter((row) => row.trim() !== "")
-          .map((row) => {
-            const [name, secondName, hexCode] = row.split(",");
-            return {
-              name: name.trim(),
-              secondName: secondName.trim(),
-              hex: `#${hexCode.trim()}`,
-            };
-          });
-      }
+  const r = parseInt(hex.slice(0, 2), 16) / 255;
+  const g = parseInt(hex.slice(2, 4), 16) / 255;
+  const b = parseInt(hex.slice(4, 6), 16) / 255;
 
-      // Color data for each Marker Line
-      let honoluluColors = [];
-      let oahuColors = [];
-      let kaalaColors = [];
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const diff = max - min;
 
-      // Fetch data for Marker Lines
-      async function loadColorData() {
-        honoluluColors = await fetchColorData(honoluluLink);
-        oahuColors = await fetchColorData(oahuLink);
-        kaalaColors = await fetchColorData(kaalaLink);
-      }
+  let h = 0;
+  let s = max === 0 ? 0 : diff / max;
+  let v = max;
 
-      // Calculate brightness of a color (for text color)
-      function calculateBrightness(hex) {
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-        return brightness;
-      }
+  if (diff !== 0) {
+    switch (max) {
+      case r:
+        h = 60 * (((g - b) / diff) % 6);
+        break;
+      case g:
+        h = 60 * ((b - r) / diff + 2);
+        break;
+      case b:
+        h = 60 * ((r - g) / diff + 4);
+        break;
+    }
+  }
 
-      // Track last selected button
-      let lastSelectedButton = null;
+  h = h < 0 ? h + 360 : h;
 
-      // Outline selected button
-      function highlightButton(buttonId) {
-        if (lastSelectedButton) {
-          lastSelectedButton.classList.remove("selected");
-        }
+  return {
+    h: h,
+    s: s * 100,
+    v: v * 100,
+  };
+}
 
-        const currentButton = document.getElementById(buttonId);
-        currentButton.classList.add("selected");
+// Calculate brightness of a color (for text color)
+function calculateBrightness(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness;
+}
 
-        lastSelectedButton = currentButton;
-      }
+// Track last selected button
+let lastSelectedButton = null;
+let currentPalette = []; // Stores the currently displayed palette
 
-      // Generate a palette based on the selected Marker Line
-      function generatePalette(MarkerLine) {
-        // Highlight the button based on Marker Line
-        if (MarkerLine === "all") {
-          highlightButton("allBtn");
-        } else if (MarkerLine === "honolulu") {
-          highlightButton("honoluluBtn");
-        } else if (MarkerLine === "oahu") {
-          highlightButton("oahuBtn");
-        } else if (MarkerLine === "kaala") {
-          highlightButton("kaalaBtn");
-        } else if (MarkerLine === "honolulu+oahu") {
-          highlightButton("honolulu+oahuBtn");
-        } else if (MarkerLine === "honolulu+kaala") {
-          highlightButton("honolulu+kaalaBtn");
-        } else if (MarkerLine === "oahu+kaala") {
-          highlightButton("oahu+kaalaBtn");
-        }
 
-        let selectedMarkerLineColors = [];
+// Outline selected button
+function highlightButton(buttonId) {
+  if (lastSelectedButton) {
+    lastSelectedButton.classList.remove("selected");
+  }
 
-        if (MarkerLine === "all") {
-          selectedMarkerLineColors = [
-            ...honoluluColors,
-            ...oahuColors,
-            ...kaalaColors,
-          ];
-        } else if (MarkerLine === "honolulu") {
-          selectedMarkerLineColors = honoluluColors;
-        } else if (MarkerLine === "oahu") {
-          selectedMarkerLineColors = oahuColors;
-        } else if (MarkerLine === "kaala") {
-          selectedMarkerLineColors = kaalaColors;
-        } else if (MarkerLine === "honolulu+oahu") {
-          selectedMarkerLineColors = [...honoluluColors, ...oahuColors];
-        } else if (MarkerLine === "honolulu+kaala") {
-          selectedMarkerLineColors = [...honoluluColors, ...kaalaColors];
-        } else if (MarkerLine === "oahu+kaala") {
-          selectedMarkerLineColors = [...oahuColors, ...kaalaColors];
-        }
+  const currentButton = document.getElementById(buttonId);
+  currentButton.classList.add("selected");
 
-// Apply Filter
-if (currentFilter === "similar") {
-  const randomHue = Math.random() * 360;
-  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
-    const hsv = hexToHSV(color.hex);
-    return (
-      Math.abs(hsv.h - randomHue) <= 10 ||
-      Math.abs(hsv.h - randomHue + 360) <= 10
+  lastSelectedButton = currentButton;
+}
+
+// Generate a palette based on the selected Marker Line
+function generatePalette(MarkerLine) {
+  // Highlight the button based on Marker Line
+  if (MarkerLine === "all") {
+    highlightButton("allBtn");
+  } else if (MarkerLine === "honolulu") {
+    highlightButton("honoluluBtn");
+  } else if (MarkerLine === "oahu") {
+    highlightButton("oahuBtn");
+  } else if (MarkerLine === "kaala") {
+    highlightButton("kaalaBtn");
+  } else if (MarkerLine === "honolulu+oahu") {
+    highlightButton("honolulu+oahuBtn");
+  } else if (MarkerLine === "honolulu+kaala") {
+    highlightButton("honolulu+kaalaBtn");
+  } else if (MarkerLine === "oahu+kaala") {
+    highlightButton("oahu+kaalaBtn");
+  }
+
+  let selectedMarkerLineColors = [];
+
+  if (MarkerLine === "all") {
+    selectedMarkerLineColors = [
+      ...honoluluColors,
+      ...oahuColors,
+      ...kaalaColors,
+    ];
+  } else if (MarkerLine === "honolulu") {
+    selectedMarkerLineColors = honoluluColors;
+  } else if (MarkerLine === "oahu") {
+    selectedMarkerLineColors = oahuColors;
+  } else if (MarkerLine === "kaala") {
+    selectedMarkerLineColors = kaalaColors;
+  } else if (MarkerLine === "honolulu+oahu") {
+    selectedMarkerLineColors = [...honoluluColors, ...oahuColors];
+  } else if (MarkerLine === "honolulu+kaala") {
+    selectedMarkerLineColors = [...honoluluColors, ...kaalaColors];
+  } else if (MarkerLine === "oahu+kaala") {
+    selectedMarkerLineColors = [...oahuColors, ...kaalaColors];
+  }
+
+  // Apply Filter
+  if (currentFilter === "similar") {
+    const randomHue = Math.random() * 360;
+    selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+      const hsv = hexToHSV(color.hex);
+      return (
+        Math.abs(hsv.h - randomHue) <= 10 ||
+        Math.abs(hsv.h - randomHue + 360) <= 10
+      );
+    });
+  } else if (currentFilter === "pastel") {
+    selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+      const hsv = hexToHSV(color.hex);
+      return hsv.s <= 30 && hsv.v >= 80;
+    });
+  } else if (currentFilter === "vivid") {
+    selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+      const hsv = hexToHSV(color.hex);
+      return hsv.s >= 50 && hsv.v >= 50;
+    });
+  } else if (currentFilter === "moody") {
+    selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+      const hsv = hexToHSV(color.hex);
+      return hsv.v <= 60;
+    });
+  } else if (currentFilter === "neutrals") {
+    selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+      const hsv = hexToHSV(color.hex);
+      return (
+        // Greys
+        hsv.s <= 7 ||
+        // Earthtones
+        (((hsv.h >= 30 && hsv.h <= 50) ||
+          (hsv.h >= 50 && hsv.h <= 50) ||
+          (hsv.h >= 15 && hsv.h < 30)) &&
+          hsv.s >= 0 &&
+          hsv.s <= 100 &&
+          hsv.v >= 0 &&
+          hsv.v <= 85)
+      );
+    });
+  } else if (currentFilter === "warm") {
+    selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+      const hsv = hexToHSV(color.hex);
+      return (
+        (hsv.h >= 0 && hsv.h <= 50) ||
+        (hsv.h >= 340 && hsv.h <= 360) &&
+        hsv.s >= 20
+      );
+    });
+  } else if (currentFilter === "cool") {
+    selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
+      const hsv = hexToHSV(color.hex);
+      return hsv.h >= 160 && hsv.h <= 280 && hsv.s >= 15;
+    });
+  }
+
+  // Generate between 3 and 8 colors in the palette
+  let numColors = Math.floor(Math.random() * 6) + 3;
+
+  // Check if there are enough colors [Kaala bug fix!!]
+  if (selectedMarkerLineColors.length < numColors) {
+    console.warn(
+      `Not enough colors to generate a full palette (${numColors} colors requested). Using available ${selectedMarkerLineColors.length} colors instead.`
     );
+    // Use available colors as the palette size
+    numColors = selectedMarkerLineColors.length;
+  }
+
+  const randomColors = [];
+currentPalette = []; // Clear previous palette
+  const usedColors = new Set();
+
+  while (randomColors.length < numColors && selectedMarkerLineColors.length > 0) {
+    const randomIndex = Math.floor(Math.random() * selectedMarkerLineColors.length);
+    const randomColor = selectedMarkerLineColors[randomIndex];
+    if (!usedColors.has(randomColor.hex)) {
+      randomColors.push(randomColor);
+      usedColors.add(randomColor.hex);
+    }
+  }
+  currentPalette = [...randomColors];
+
+  // Display the palette colors
+  const paletteDisplay = document.getElementById("palette");
+  paletteDisplay.innerHTML = "";
+  randomColors.forEach((color) => {
+    const brightness = calculateBrightness(color.hex);
+    const textColor = brightness > 128 ? "#000" : "#fff";
+    const colorBlock = document.createElement("div");
+    colorBlock.className = "color-block";
+    colorBlock.style.backgroundColor = color.hex;
+    colorBlock.style.color = textColor;
+let labelContent = "";
+
+if (currentNameDisplayMode === "both") {
+  labelContent = `
+    <div class="label"><b>New:</b></div>
+    <div>${color.newNumber}</div>
+    <div>${color.newName}</div>
+    <div class="label" style="margin-top: 10px;"><b>Old:</b></div>
+    <div>${color.oldNumber}</div>
+    <div>${color.oldName}</div>
+  `;
+} else if (currentNameDisplayMode === "old") {
+  labelContent = `
+    <div class="label"><b>Old:</b></div>
+    <div>${color.oldNumber}</div>
+    <div>${color.oldName}</div>
+  `;
+} else if (currentNameDisplayMode === "new") {
+  labelContent = `
+    <div class="label"><b>New:</b></div>
+    <div>${color.newNumber}</div>
+    <div>${color.newName}</div>
+  `;
+}
+
+colorBlock.innerHTML = `
+  <div class="color-info">
+    ${labelContent}
+    <div class="hex-code" style="margin-top: 10px;">${color.hex}</div>
+  </div>
+`;
+
+    paletteDisplay.appendChild(colorBlock);
   });
-} else if (currentFilter === "pastel") {
-  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
-    const hsv = hexToHSV(color.hex);
-    return hsv.s <= 30 && hsv.v >= 80;
-  });
-} else if (currentFilter === "vivid") {
-  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
-    const hsv = hexToHSV(color.hex);
-    return hsv.s >= 50 && hsv.v >= 50;
-  });
-} else if (currentFilter === "moody") {
-  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
-    const hsv = hexToHSV(color.hex);
-    return hsv.v <= 60;
-  });
-} else if (currentFilter === "neutrals") {
-  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
-    const hsv = hexToHSV(color.hex);
-    return (
-      // Greys
-      hsv.s <= 7 ||
-      // Earthtones
-      (((hsv.h >= 30 && hsv.h <= 50) ||
-        (hsv.h >= 50 && hsv.h <= 50) ||
-        (hsv.h >= 15 && hsv.h < 30)) &&
-        hsv.s >= 0 &&
-        hsv.s <= 100 &&
-        hsv.v >= 0 &&
-        hsv.v <= 85)
-    );
-  });
-} else if (currentFilter === "warm") {
-  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
-    const hsv = hexToHSV(color.hex);
-    return (
-      ((hsv.h >= 0 && hsv.h <= 50) || 
-        (hsv.h >= 340 && hsv.h <= 360)) &&
-      hsv.s >= 20 
-    );
-  });
-} else if (currentFilter === "cool") {
-  selectedMarkerLineColors = selectedMarkerLineColors.filter((color) => {
-    const hsv = hexToHSV(color.hex);
-    return (
-      (hsv.h >= 160 && hsv.h <= 280) && 
-      hsv.s >= 15 
-    );
+}
+      
+      // Display Mode Toggle
+let currentNameDisplayMode = "both";
+
+function setNameDisplayMode(mode) {
+  currentNameDisplayMode = mode;
+
+  // Update button highlighting
+  document.querySelectorAll(".name-toggle-btn").forEach((btn) =>
+    btn.classList.remove("selected")
+  );
+  document.getElementById(`toggle${capitalize(mode)}`).classList.add("selected");
+
+  // Redraw palette with new display mode without generating a new one
+  redrawPalette();
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// Generate another palette, remember Marker Line + Filter
+function generateAnotherPalette() {
+  const currentMarkerLine = lastSelectedButton.id.replace("Btn", "");
+  generatePalette(currentMarkerLine);
+}
+      function redrawPalette() {
+  if (currentPalette.length === 0) return;
+
+  const paletteDisplay = document.getElementById("palette");
+  paletteDisplay.innerHTML = "";
+
+  currentPalette.forEach((color) => {
+    const brightness = calculateBrightness(color.hex);
+    const textColor = brightness > 128 ? "#000" : "#fff";
+    const colorBlock = document.createElement("div");
+    colorBlock.className = "color-block";
+    colorBlock.style.backgroundColor = color.hex;
+    colorBlock.style.color = textColor;
+
+    let labelContent = "";
+
+    if (currentNameDisplayMode === "both") {
+      labelContent = `
+        <div class="label"><b>New:</b></div>
+        <div>${color.newNumber}</div>
+        <div>${color.newName}</div>
+        <div class="label" style="margin-top: 10px;"><b>Old:</b></div>
+        <div>${color.oldNumber}</div>
+        <div>${color.oldName}</div>
+      `;
+    } else if (currentNameDisplayMode === "old") {
+      labelContent = `
+        <div class="label"><b>Old:</b></div>
+        <div>${color.oldNumber}</div>
+        <div>${color.oldName}</div>
+      `;
+    } else if (currentNameDisplayMode === "new") {
+      labelContent = `
+        <div class="label"><b>New:</b></div>
+        <div>${color.newNumber}</div>
+        <div>${color.newName}</div>
+      `;
+    }
+
+    colorBlock.innerHTML = `
+      <div class="color-info">
+        ${labelContent}
+        <div class="hex-code" style="margin-top: 10px;">${color.hex}</div>
+      </div>
+    `;
+
+    paletteDisplay.appendChild(colorBlock);
   });
 }
 
-        // Generate between 3 and 8 colors in the palette
-        let numColors = Math.floor(Math.random() * 6) + 3;
+// Load data when the page loads
+loadColorData();
 
-        // Check if there are enough colors [Kaala bug fix!!]
-        if (selectedMarkerLineColors.length < numColors) {
-          console.warn(
-            `Not enough colors to generate a full palette (${numColors} colors requested). Using available ${selectedMarkerLineColors.length} colors instead.`
-          );
-          // Use available colors as the palette size
-          numColors = selectedMarkerLineColors.length;
-        }
-
-        const randomColors = [];
-        const usedColors = new Set();
-
-        while (
-          randomColors.length < numColors &&
-          selectedMarkerLineColors.length > 0
-        ) {
-          const randomIndex = Math.floor(
-            Math.random() * selectedMarkerLineColors.length
-          );
-          const randomColor = selectedMarkerLineColors[randomIndex];
-          if (!usedColors.has(randomColor.hex)) {
-            randomColors.push(randomColor);
-            usedColors.add(randomColor.hex);
-          }
-        }
-
-        // Display the palette colors
-        const paletteDisplay = document.getElementById("palette");
-        paletteDisplay.innerHTML = "";
-        randomColors.forEach((color) => {
-          const brightness = calculateBrightness(color.hex);
-          const textColor = brightness > 128 ? "#000" : "#fff";
-          const colorBlock = document.createElement("div");
-          colorBlock.className = "color-block";
-          colorBlock.style.backgroundColor = color.hex;
-          colorBlock.style.color = textColor;
-          colorBlock.innerHTML = `<div>${color.name}<br>${color.secondName}<br>${color.hex}</div>`;
-          paletteDisplay.appendChild(colorBlock);
-        });
-      }
-
-      // Generate another palette, remember Marker Line + Filter
-      function generateAnotherPalette() {
-        const currentMarkerLine = lastSelectedButton.id.replace("Btn", "");
-        generatePalette(currentMarkerLine);
-      }
-
-      // Load data when the page loads
-      loadColorData();
     </script>
 
     <!--Ko-fi Widget-->
