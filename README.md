@@ -9,6 +9,9 @@ Palettes of 3–8 colors can be generated from the **Honolulu**, **Oahu**, and/o
 
 - Generate Palettes of 3-8 Colors with One Click
 - Choose from the Honolulu, Oahu, or Kaala marker lines, a Combination of two lines, or All Markers
+- Each Color is identified by the Marker Number Code, Color Name, and a Hex Code that gives a general idea of what each color looks like
+- NEW! Choose which Names/Numbers are Displayed: Ohuhu is rolling out new names and number codes that will apply to all included marker lines for 2025. Avoid confusion by choosing whether generated palettes display Both the New & Old Names/Numbers, Only the Old Names/Numbers, or Only the New Names/Numbers to suit your personal collection! 
+
 - Filter the Generated Palette Colors to be:
   - Totally Random
   - Similar Colors: For Palettes of Similar Hues
@@ -17,9 +20,9 @@ Palettes of 3–8 colors can be generated from the **Honolulu**, **Oahu**, and/o
   - Pastel Colors: For Palettes that are Soft and Light
   - Vivid Colors: For Palettes that are Bright and Eye-Catching
   - Moody Colors: For Palettes that are Rich and Dark
-  - Neutral Colors: For Palettes that are Minimal and Grounded 
-- Each Color is identified by the Marker Number Code, Color Name, and a Hex Code\* that gives a general idea of what each color looks like
-- Screenshot Palettes you like to Save them for Later
+  - Neutral Colors: For Palettes that are Minimal and Grounded
+  
+- Screenshot Palettes you like to Save them for Later!
 
 ---
 
@@ -34,7 +37,7 @@ Palettes of 3–8 colors can be generated from the **Honolulu**, **Oahu**, and/o
 
 ## ✨ Acknowledgments ✨
 
-- I do not own or work for the Ohuhu brand, nor do I own any associted branding, marks, etc. I just like using the markers!
+- I do not own or work for the Ohuhu brand, nor do I own any associated branding, marks, etc. I just like using the markers!
 
 - This project would not exist if it were not for both the requests and generosity of the wider Ohuhu Community, so Thank You!
 
